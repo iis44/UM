@@ -14,15 +14,51 @@
             background-color: red; /* تغيير اللون إلى اللون البنفسجي */
             border-radius: 50%;
         }
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader {
+            width: 100px;
+            height: 100px;
+            background-image: url('loader.gif');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .logo {
+            position: absolute;
+            top: -7px; /* تحديد التباعد العمودي للشعار بوحدة الـ px */
+            left: -10px; /* تحديد التباعد الأفقي للشعار بوحدة الـ px */
+            transform: translate(0%, 0%);
+            z-index: 99999;
+        }
     </style>
 </head>
 <body>
+
+<div class="logo">
+    <img src="logo1.png" alt="Logo" style="width: 100px">
+</div>
 
 <div id="map"></div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiaWkxIiwiYSI6ImNsc2tqdW5kejA0M3Eya253OXlwYW5tdjcifQ.TbZ6WA7PVPl8OpNISURvqg';
+
+// Delayed function to hide loader after 3 seconds
+setTimeout(function() {
+    document.querySelector('.loader-container').style.display = 'none';
+}, 3000);
 
 var map = new mapboxgl.Map({
     container: 'map',
@@ -31,7 +67,7 @@ var map = new mapboxgl.Map({
     zoom: 1.4 // تكبير الخريطة لعرض المملكة العربية السعودية
 });
     
-    map.on('load', function() {
+map.on('load', function() {
     map.addLayer({
         'id': '3d-buildings',
         'source': 'composite',
@@ -57,7 +93,6 @@ var map = new mapboxgl.Map({
         }
     });
 });
-
 
 // Load markers from JSON file
 fetch('markers.json')
