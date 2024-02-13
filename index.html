@@ -41,6 +41,9 @@
             transform: translate(0%, 0%);
             z-index: 99999;
         }
+        .mapboxgl-ctrl-logo {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -64,7 +67,8 @@ var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v10', // تحديد نمط الخريطة Dark
     center: [30, 40], // تحديد الموقع المركزي للمملكة العربية السعودية
-    zoom: 1.4 // تكبير الخريطة لعرض المملكة العربية السعودية
+    zoom: 1.4, // تكبير الخريطة لعرض المملكة العربية السعودية
+    attributionControl: false 
 });
     
 map.on('load', function() {
