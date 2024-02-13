@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox Marker from JSON</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100vh; }
+        .circle-marker {
+            width: 15px;
+            height: 15px;
+            background-color: red; /* تغيير اللون إلى اللون البنفسجي */
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWkxIiwiYSI6ImNsc2tqdW5kejA0M3Eya253OXlwYW5tdjcifQ.TbZ6WA7PVPl8OpNISURvqg';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v10', // تحديد نمط الخريطة Dark
+    center: [30, 40], // تحديد الموقع المركزي للمملكة العربية السعودية
+    zoom: 1.4 // تكبير الخريطة لعرض المملكة العربية السعودية
+});
+    
+    map.on('load', function() {
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+            'fill-extrusion-color': '#aaa',
+            'fill-extrusion-height': [
+                'interpolate', ['linear'],
+                ['zoom'],
+                15, 0,
+                15.05, ['get', 'height']
+            ],
+            'fill-extrusion-base': [
+                'interpolate', ['linear'],
+                ['zoom'],
+                15, 0,
+                15.05, ['get', 'min_height']
+            ],
+            'fill-extrusion-opacity': 0.6
+        }
+    });
+});
+
+
+// Load markers from JSON file
+fetch('markers.json')
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(marker => {
+      var popupContent = '<h3>' + marker.name + '</h3>';
+      var newMarker = new mapboxgl.Marker({ className: 'circle-marker' })
+        .setLngLat(marker.coordinates)
+        .setPopup(new mapboxgl.Popup().setHTML(popupContent));
+      
+      if (marker.category === 'University') {
+        newMarker.getElement().style.backgroundColor = 'purple'; // تغيير لون العلامة إلى اللون البنفسجي
+      }
+      
+      newMarker.addTo(map);
+      
+      newMarker.getElement().addEventListener('click', function() {
+          var zoomLevel = marker.category === 'University' ? 16 : 6;
+          var pitchValue = marker.category === 'University' ? 55 : 0; // تعيين زاوية الإمالة
+          map.easeTo({
+              center: marker.coordinates,
+              zoom: zoomLevel,
+              pitch: pitchValue, // تعيين الزاوية المطلوبة للإمالة
+              duration: 2000 // تحديد مدة التقريب بالمللي ثانية
+          });
+      });
+      
+      // Hide countries markers when zoom is greater than or equal to 6
+      map.on('zoom', function() {
+        var zoomLevel = map.getZoom();
+        if (zoomLevel >= 6 && marker.category === 'Country') {
+          newMarker.remove();
+        } else {
+          newMarker.addTo(map);
+        }
+      });
+      
+      // Hide universities markers when zoom is less than 6
+      map.on('zoom', function() {
+        var zoomLevel = map.getZoom();
+        if (zoomLevel < 1 && marker.category === 'University') {
+          newMarker.remove();
+        } else {
+          newMarker.addTo(map);
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

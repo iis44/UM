@@ -1,0 +1,139 @@
+[
+
+  {
+    "name": "برج المملكة",
+    "coordinates": [46.6744284, 24.7114574],
+    "category": "University"
+  },
+    
+  {
+    "name": "المملكة العربية السعودية",
+    "coordinates": [45, 24],
+    "category": "Country"
+  },
+  {
+    "name": "أفغانستان",
+    "coordinates": [67, 33],
+    "category": "Country"
+  },
+  {
+    "name": "ألبانيا",
+    "coordinates": [20, 41],
+    "category": "Country"
+  },
+  {
+    "name": "الجزائر",
+    "coordinates": [3, 28],
+    "category": "Country"
+  },
+  {
+    "name": "أندورا",
+    "coordinates": [1.5, 42.5],
+    "category": "Country"
+  },
+  {
+    "name": "أنغولا",
+    "coordinates": [18, -12],
+    "category": "Country"
+  },
+  {
+    "name": "أنتيغوا وباربودا",
+    "coordinates": [-61, 17],
+    "category": "Country"
+  },
+  {
+    "name": "الأرجنتين",
+    "coordinates": [-64, -34],
+    "category": "Country"
+  },
+  {
+    "name": "أرمينيا",
+    "coordinates": [45, 40],
+    "category": "Country"
+  },
+  {
+    "name": "أستراليا",
+    "coordinates": [135, -25],
+    "category": "Country"
+  },
+  {
+    "name": "النمسا",
+    "coordinates": [14, 48],
+    "category": "Country"
+  },
+  {
+    "name": "أذربيجان",
+    "coordinates": [47, 40],
+    "category": "Country"
+  },
+  {
+    "name": "جزر البهاما",
+    "coordinates": [-78, 24],
+    "category": "Country"
+  },
+  {
+    "name": "البحرين",
+    "coordinates": [50, 26],
+    "category": "Country"
+  },
+  {
+    "name": "بنغلاديش",
+    "coordinates": [90, 24],
+    "category": "Country"
+  },
+  {
+    "name": "باربادوس",
+    "coordinates": [-59, 13],
+    "category": "Country"
+  },
+  {
+    "name": "بيلاروسيا",
+    "coordinates": [28, 53],
+    "category": "Country"
+  },
+  {
+    "name": "بلجيكا",
+    "coordinates": [5, 50],
+    "category": "Country"
+  },
+  {
+    "name": "بليز",
+    "coordinates": [-89, 17],
+    "category": "Country"
+  },
+  {
+    "name": "بنين",
+    "coordinates": [2, 9],
+    "category": "Country"
+  },
+  {
+    "name": "بوتان",
+    "coordinates": [90, 27],
+    "category": "Country"
+  },
+  {
+    "name": "بوليفيا",
+    "coordinates": [-65, -17],
+    "category": "Country"
+  },
+  {
+    "name": "البوسنة والهرسك",
+    "coordinates": [18, 44],
+    "category": "Country"
+  },
+  {
+    "name": "بوتسوانا",
+    "coordinates": [24, -22],
+    "category": "Country"
+  },
+  {
+    "name": "البرازيل",
+    "coordinates": [-53, -10],
+    "category": "Country"
+  },
+  {
+    "name": "بروناي",
+    "coordinates": [115, 4.5],
+    "category": "Country"
+  }
+]
