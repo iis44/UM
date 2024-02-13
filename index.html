@@ -99,7 +99,7 @@ fetch('markers.json')
       // Hide universities markers when zoom is less than 6
       map.on('zoom', function() {
         var zoomLevel = map.getZoom();
-        if (zoomLevel < 1 && marker.category === 'University') {
+        if (zoomLevel < 6 && marker.category === 'University') {
           newMarker.remove();
         } else {
           newMarker.addTo(map);
