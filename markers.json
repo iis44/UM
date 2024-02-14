@@ -1,13 +1,38 @@
 [
 
   {
-    "name": "برج المملكة",
-    "coordinates": [46.6744284, 24.7114574],
+    "name": "معهد ماساتشوستس للتكنولوجيا",
+    "coordinates": [-71.0941, 42.3601],
     "category": "University",
           
     "photo": {
-            "src": "H.jpeg",
-            "rating": 90
+            "src": "1.jpeg",
+            "rating": 100,
+            "priceRating": 99
+        }
+      
+  },
+     {
+    "name": "جامعة كامبريدج ",
+    "coordinates": [0.1258, 52.205],
+    "category": "University",
+          
+    "photo": {
+            "src": "2.png",
+            "rating": 100,
+            "priceRating": 99
+        }
+      
+  },
+     {
+    "name": "جامعة أكسفورد",
+    "coordinates": [-1.2578, 51.7522],
+    "category": "University",
+          
+    "photo": {
+            "src": "th.webp",
+            "rating": 100,
+            "priceRating": 99
         }
       
   },
@@ -18,7 +43,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 43,
+            "priceRating": 70
         }
       
   },
@@ -29,7 +55,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 95,
+            "priceRating": 60
         }
       
   },
@@ -40,7 +67,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 50
         }
       
   },
@@ -51,7 +79,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 50
         }
       
   },
@@ -62,7 +91,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 40
         }
       
   },
@@ -73,7 +103,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 39
         }
       
   },
@@ -84,7 +115,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 30
         }
       
   },
@@ -95,7 +127,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -106,7 +139,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -117,7 +151,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -128,7 +163,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -139,7 +175,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -150,7 +187,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -161,7 +199,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -172,7 +211,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
@@ -183,29 +223,8 @@
           
     "photo": {
             "src": "H.jpeg",
-            "rating": 90
-        }
-      
-  },
-     {
-    "name": "برج المملكة",
-    "coordinates": [46.6744284, 24.7114574],
-    "category": "University",
-          
-    "photo": {
-            "src": "H.jpeg",
-            "rating": 90
-        }
-      
-  },
-     {
-    "name": "برج المملكة",
-    "coordinates": [46.6744284, 24.7114574],
-    "category": "University",
-          
-    "photo": {
-            "src": "H.jpeg",
-            "rating": 90
+            "rating": 90,
+            "priceRating": 20
         }
       
   },
