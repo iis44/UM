@@ -11,7 +11,7 @@
         .circle-marker {
             width: 15px;
             height: 15px;
-            background-color: red; /* تغيير اللون إلى اللون البنفسجي */
+            background-color: red;
             border-radius: 50%;
         }
         .loader-container {
@@ -36,13 +36,59 @@
         }
         .logo {
             position: absolute;
-            top: -7px; /* تحديد التباعد العمودي للشعار بوحدة الـ px */
-            left: -10px; /* تحديد التباعد الأفقي للشعار بوحدة الـ px */
+            top: -7px;
+            left: -10px;
             transform: translate(0%, 0%);
             z-index: 99999;
         }
         .mapboxgl-ctrl-logo {
             display: none !important;
+        }
+        #photos-slides-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding: 10px 0;
+            z-index: 9999;
+            scrollbar-width: thin;
+            scrollbar-color: gray;
+        }
+        #photos-slides-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        #photos-slides-container::-webkit-scrollbar-thumb {
+            background-color: gray;
+            border-radius: 5px;
+        }
+        .photo-slide {
+            text-align: center;
+            padding: 0 5px;
+            cursor: pointer; /* تجعل الصور قابلة للنقر */
+        }
+        .photo-slide img {
+            width: 150px; /* تقليل حجم الصور */
+            height: 150px; /* تقليل حجم الصور */
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+        .photo-info {
+            color: white;
+            margin-bottom: 3px;
+        }
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            margin-top: 3px;
+        }
+        .rating-stars span {
+            color: gold;
         }
     </style>
 </head>
@@ -53,6 +99,8 @@
 </div>
 
 <div id="map"></div>
+
+<div id="photos-slides-container"></div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
 <script>
@@ -65,9 +113,9 @@ setTimeout(function() {
 
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/dark-v10', // تحديد نمط الخريطة Dark
-    center: [30, 40], // تحديد الموقع المركزي للمملكة العربية السعودية
-    zoom: 1.4, // تكبير الخريطة لعرض المملكة العربية السعودية
+    style: 'mapbox://styles/mapbox/dark-v10',
+    center: [30, 40],
+    zoom: 1.4,
     attributionControl: false 
 });
     
@@ -96,56 +144,89 @@ map.on('load', function() {
             'fill-extrusion-opacity': 0.6
         }
     });
+
+    // Load markers and photos from JSON file
+    fetch('markers.json')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(marker => {
+          var popupContent = '<h3>' + marker.name + '</h3>';
+          var newMarker = new mapboxgl.Marker({ className: 'circle-marker' })
+            .setLngLat(marker.coordinates)
+            .setPopup(new mapboxgl.Popup().setHTML(popupContent));
+          
+          if (marker.category === 'University') {
+            newMarker.getElement().style.backgroundColor = 'purple'; 
+            var photo = marker.photo;
+            var img = document.createElement('img');
+            img.src = photo.src;
+            var name = document.createElement('div');
+            name.textContent = marker.name;
+            var starsContainer = document.createElement('div');
+            starsContainer.classList.add('rating-stars');
+            for (var i = 0; i < 5; i++) {
+                var star = document.createElement('span');
+                star.textContent = '★';
+                if (i * 20 < photo.rating) {
+                    star.style.color = 'gold';
+                }
+                starsContainer.appendChild(star);
+            }
+            var slide = document.createElement('div');
+            slide.classList.add('photo-slide');
+            slide.appendChild(img);
+            var photoInfo = document.createElement('div');
+            photoInfo.classList.add('photo-info');
+            photoInfo.appendChild(name);
+            slide.appendChild(photoInfo);
+            slide.appendChild(starsContainer);
+            document.getElementById('photos-slides-container').appendChild(slide);
+
+            // إضافة حدث النقر للتقريب على الموقع عند النقر على الصورة
+            slide.addEventListener('click', function() {
+              map.easeTo({
+                center: marker.coordinates,
+                zoom: 16, // التقريب إلى مستوى محدد
+                pitch: 55, 
+                duration: 2000 
+              });
+            });
+          }
+          
+          newMarker.addTo(map);
+          
+          newMarker.getElement().addEventListener('click', function() {
+              var zoomLevel = marker.category === 'University' ? 16 : 6;
+              var pitchValue = marker.category === 'University' ? 55 : 0; 
+              map.easeTo({
+                  center: marker.coordinates,
+                  zoom: zoomLevel,
+                  pitch: pitchValue, 
+                  duration: 2000 
+              });
+          });
+          
+          map.on('zoom', function() {
+            var zoomLevel = map.getZoom();
+            if (zoomLevel >= 6 && marker.category === 'Country') {
+              newMarker.remove();
+            } else {
+              newMarker.addTo(map);
+            }
+          });
+          
+          map.on('zoom', function() {
+            var zoomLevel = map.getZoom();
+            if (zoomLevel < 6 && marker.category === 'University') {
+              newMarker.remove();
+            } else {
+              newMarker.addTo(map);
+            }
+          });
+        });
+      });
 });
 
-// Load markers from JSON file
-fetch('markers.json')
-  .then(response => response.json())
-  .then(data => {
-    data.forEach(marker => {
-      var popupContent = '<h3>' + marker.name + '</h3>';
-      var newMarker = new mapboxgl.Marker({ className: 'circle-marker' })
-        .setLngLat(marker.coordinates)
-        .setPopup(new mapboxgl.Popup().setHTML(popupContent));
-      
-      if (marker.category === 'University') {
-        newMarker.getElement().style.backgroundColor = 'purple'; // تغيير لون العلامة إلى اللون البنفسجي
-      }
-      
-      newMarker.addTo(map);
-      
-      newMarker.getElement().addEventListener('click', function() {
-          var zoomLevel = marker.category === 'University' ? 16 : 6;
-          var pitchValue = marker.category === 'University' ? 55 : 0; // تعيين زاوية الإمالة
-          map.easeTo({
-              center: marker.coordinates,
-              zoom: zoomLevel,
-              pitch: pitchValue, // تعيين الزاوية المطلوبة للإمالة
-              duration: 2000 // تحديد مدة التقريب بالمللي ثانية
-          });
-      });
-      
-      // Hide countries markers when zoom is greater than or equal to 6
-      map.on('zoom', function() {
-        var zoomLevel = map.getZoom();
-        if (zoomLevel >= 6 && marker.category === 'Country') {
-          newMarker.remove();
-        } else {
-          newMarker.addTo(map);
-        }
-      });
-      
-      // Hide universities markers when zoom is less than 6
-      map.on('zoom', function() {
-        var zoomLevel = map.getZoom();
-        if (zoomLevel < 6 && marker.category === 'University') {
-          newMarker.remove();
-        } else {
-          newMarker.addTo(map);
-        }
-      });
-    });
-  });
 </script>
 
 </body>
