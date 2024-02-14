@@ -6,14 +6,15 @@
     <title>University Map</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; }
-        #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100vh; }
+        body { margin: 0; padding: 0; overflow: hidden; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 105%; }
         .circle-marker {
             width: 15px;
             height: 15px;
             background-color: red;
             border-radius: 50%;
         }
+        
         .loader-container {
             position: fixed;
             top: 0;
@@ -70,10 +71,11 @@
             text-align: center;
             padding: 0 5px;
             cursor: pointer; /* تجعل الصور قابلة للنقر */
+            transition: transform 0.3s, opacity 0.3s; /* إضافة انيميشن للتصغير والتظليل */
         }
         .photo-slide img {
-            width: 150px; /* تقليل حجم الصور */
-            height: 150px; /* تقليل حجم الصور */
+            width: 100px; /* تقليل حجم الصور */
+            height: 100px; /* تقليل حجم الصور */
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 5px;
@@ -88,7 +90,7 @@
             margin-top: 3px;
         }
         .rating-stars span {
-            color: gold;
+            color: gray;
         }
     </style>
 </head>
@@ -101,6 +103,10 @@
 <div id="map"></div>
 
 <div id="photos-slides-container"></div>
+
+<div>
+    <button id="reset-button">إعادة الصور إلى حجمها الطبيعي</button>
+</div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
 <script>
@@ -164,14 +170,29 @@ map.on('load', function() {
             name.textContent = marker.name;
             var starsContainer = document.createElement('div');
             starsContainer.classList.add('rating-stars');
+            var priceSignsContainer = document.createElement('div');
+            priceSignsContainer.classList.add('rating-stars'); // استخدام نفس النمط لتقييم السعر
+
+            // تقييم النجوم
             for (var i = 0; i < 5; i++) {
                 var star = document.createElement('span');
                 star.textContent = '★';
-                if (i * 20 < photo.rating) {
+                if (i < (photo.rating / 20)) { // تحويل التقييم ليكون من 100 بدلاً من 5
                     star.style.color = 'gold';
                 }
                 starsContainer.appendChild(star);
             }
+
+            // تقييم السعر
+            for (var i = 0; i < 5; i++) {
+                var priceSign = document.createElement('span');
+                priceSign.textContent = '$';
+                if (i < (photo.priceRating / 20)) { // تحويل التقييم ليكون من 100 بدلاً من 5
+                    priceSign.style.color = 'green';
+                }
+                priceSignsContainer.appendChild(priceSign);
+            }
+
             var slide = document.createElement('div');
             slide.classList.add('photo-slide');
             slide.appendChild(img);
@@ -180,6 +201,7 @@ map.on('load', function() {
             photoInfo.appendChild(name);
             slide.appendChild(photoInfo);
             slide.appendChild(starsContainer);
+            slide.appendChild(priceSignsContainer); // إضافة تقييم السعر إلى العنصر المنزلق
             document.getElementById('photos-slides-container').appendChild(slide);
 
             // إضافة حدث النقر للتقريب على الموقع عند النقر على الصورة
@@ -190,6 +212,8 @@ map.on('load', function() {
                 pitch: 55, 
                 duration: 2000 
               });
+              // تنفيذ الانيميشن وعرض التفاصيل
+              showDetails(slide);
             });
           }
           
@@ -227,6 +251,37 @@ map.on('load', function() {
       });
 });
 
+// دالة لتنفيذ الانيميشن وعرض التفاصيل عند الضغط على الصورة
+function showDetails(marker) {
+    // تقليل حجم الصورة
+    document.querySelectorAll('.photo-slide').forEach(function(slide) {
+        if (slide !== marker) {
+            slide.style.transform = 'scale(0.8)';
+            slide.style.opacity = '0.5';
+        }
+    });
+
+    // عرض التفاصيل للصورة المحددة
+    marker.style.transform = 'scale(1)';
+    marker.style.opacity = '1';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // إضافة حدث النقر لكل صورة
+    document.querySelectorAll('.photo-slide').forEach(function(slide) {
+        slide.addEventListener('click', function() {
+            showDetails(slide);
+        });
+    });
+
+    // إضافة حدث النقر للزر لإرجاع الصور إلى وضعها الطبيعي
+    document.getElementById('reset-button').addEventListener('click', function() {
+        document.querySelectorAll('.photo-slide').forEach(function(slide) {
+            slide.style.transform = 'scale(1)';
+            slide.style.opacity = '1';
+        });
+    });
+});
 </script>
 
 </body>
