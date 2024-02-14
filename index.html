@@ -6,7 +6,7 @@
     <title>University Map</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        body { margin: 0; padding: 0; overflow: hidden; }
         #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 105%; }
         .circle-marker {
             width: 15px;
@@ -57,20 +57,21 @@
             overflow-x: auto;
             padding: 10px 0;
             z-index: 9999;
-            scrollbar-width: thin;
-            scrollbar-color: gray;
         }
         #photos-slides-container::-webkit-scrollbar {
             width: 5px;
+            height: 10px;
         }
         #photos-slides-container::-webkit-scrollbar-thumb {
-            background-color: gray;
+            background-color: darkgray;
             border-radius: 5px;
+            width: 2px;
         }
         .photo-slide {
             text-align: center;
             padding: 0 5px;
             cursor: pointer; /* تجعل الصور قابلة للنقر */
+            transition: transform 0.3s, opacity 0.3s; /* إضافة انيميشن للتصغير والتظليل */
         }
         .photo-slide img {
             width: 100px; /* تقليل حجم الصور */
@@ -91,7 +92,6 @@
         .rating-stars span {
             color: gray;
         }
-        /* تنسيق زر علامة التعجب */
         #exclamation-button {
             position: fixed;
             top: 20px;
@@ -175,17 +175,15 @@
 <div id="map"></div>
 
 <div id="photos-slides-container"></div>
-
-<!-- زر علامة التعجب -->
+    
 <div id="exclamation-button">!</div>
 
 <!-- الشاشة المنبثقة -->
 <div id="popup">
-    <a><br>This site made and designed by <h4>ekram benyam mohammed</h4></a>
-    <div class="close-btn" onclick="closePopup()">×</div>
+    <a>T<br>his site made and designed by <h4>Ekram Benyam Mohammed</h4></a>
+    <div class="close-btn" onclick="closePopup()">X</div>
 </div>
 
-<!-- زر Instagram -->
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
 <script>
@@ -291,6 +289,8 @@ map.on('load', function() {
                 pitch: 55, 
                 duration: 2000 
               });
+              // تنفيذ الانيميشن وعرض التفاصيل
+              showDetails(slide);
             });
           }
           
@@ -328,7 +328,39 @@ map.on('load', function() {
       });
 });
 
-// حدث النقر على زر علامة التعجب
+// دالة لتنفيذ الانيميشن وعرض التفاصيل عند الضغط على الصورة
+function showDetails(marker) {
+    // تقليل حجم الصورة
+    document.querySelectorAll('.photo-slide').forEach(function(slide) {
+        if (slide !== marker) {
+            slide.style.transform = 'scale(0.8)';
+            slide.style.opacity = '0.5';
+        }
+    });
+
+    // عرض التفاصيل للصورة المحددة
+    marker.style.transform = 'scale(1)';
+    marker.style.opacity = '1';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // إضافة حدث النقر لكل صورة
+    document.querySelectorAll('.photo-slide').forEach(function(slide) {
+        slide.addEventListener('click', function() {
+            showDetails(slide);
+        });
+    });
+
+    // إضافة حدث النقر للزر لإرجاع الصور إلى وضعها الطبيعي
+    document.getElementById('reset-button').addEventListener('click', function() {
+        document.querySelectorAll('.photo-slide').forEach(function(slide) {
+            slide.style.transform = 'scale(1)';
+            slide.style.opacity = '1';
+        });
+    });
+});
+    
+    // حدث النقر على زر علامة التعجب
 document.getElementById('exclamation-button').addEventListener('click', function() {
     document.getElementById('popup').style.display = 'flex';
 });
